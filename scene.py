@@ -70,5 +70,21 @@ class RotatingSquare(Scene):
         self.play(Rotate(square, PI), run_time=2)
         self.wait() 
 
-# testin
 
+class MovingBox(Scene):
+    def construct(self):
+        
+        box = Rectangle(stroke_color = GREEN_C, stroke_opacity= 0.7 , fill_color = RED_B,  fill_opacity = 0.5, height=1, width=1)
+
+        self.add(box)  # show the box on screen
+        self.play(box.animate.shift(RIGHT*2), run_time=2) # move the box to the right for 2 seconds
+        self.play(box.animate.shift(UP*3), run_time=2) # move the box up for 2 seconds
+        self.play(box.animate.shift(DOWN*5 + LEFT*5), run_time=2) # move the box down and to the left for 2 seconds
+        self.play(box.animate.shift(UP*1.5 + RIGHT*1), run_time=2) # move the box up and to the right for 2 seconds
+        self.play(box.animate.shift(DOWN*1.5 + LEFT*1), run_time=2) # move the box down and to the left for 2 seconds
+        self.wait() # wait for the animation to finish
+
+
+
+
+                
