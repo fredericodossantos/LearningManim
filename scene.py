@@ -88,11 +88,11 @@ class MovingBox(Scene):
 class FittingObjects(Scene):
     def construct(self):
 
-        axes = Axes(x_range=[-3,3,.1], y_range=[-3,3,.1], x_length=6, y_length=6)
-        axes.to_edge(LEFT, buff=0.5)
+        axes = Axes(x_range=[-3,3,.1], y_range=[-3,3,.1], x_length=6, y_length=6) # create axes
+        axes.to_edge(LEFT, buff=0.5)# move it to the left of the screen with a buffer space
 
         circle = Circle(stroke_width = 6, stroke_color = BLUE, fill_color = BLUE, fill_opacity = 0.5)
-        circle.set_width(2).to_edge(DR, buff=0)
+        circle.set_width(2).to_edge(DR, buff=0) # set width and move to bottom right of screen
 
         triangle = Triangle(stroke_width = 10, stroke_color = RED).shift(DOWN*3+RIGHT*3)
 
@@ -101,4 +101,18 @@ class FittingObjects(Scene):
         self.play(circle.animate.set_width(1), run_time=2)
         self.play(Transform(circle, triangle), run_time=3)
 
-        
+
+class GraphingMovement(Scene):
+    def construct(self):
+        axes = Axes(x_range=[0,5,1], y_range=[0,3,1], x_length=5, y_length=3,
+                    axis_config={"include_tip": True, "numbers_to_exclude": [0]}).add_coordinates()
+        axes.to_edge(UR)
+        axis_labels = axes.get_axis_labels(x_label="x", y_label="f(x)")
+
+        graph = axes.plot(lambda x : x**0.5, x_range = [0,4],  color = YELLOW)
+        graphing_stuff = VGroup(axes, graph, axis_labels)
+
+        self.play(DrawBorderThenFill(axes),Write(axis_labels))
+        self.play(Create(graph))
+        self.play(graphing_stuff.animate.shift(LEFT*3), run_time=3)
+        self.wait()
