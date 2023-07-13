@@ -16,18 +16,20 @@ class Reflect(Scene):
         )
 
         f = lambda x: 2 * x + 1
-        g = lambda x:  0.5 * x + 1
-        f_graph = self.axes.plot(f, x_range=[-10, 10], color=BLUE)
-        g_graph = self.axes.plot(g, x_range=[-10, 10], color=YELLOW)
+        g = lambda x: 0.5 * x + 1
 
         intersection_point = self.intersection(f, g)
+        x_coord, _ = self.axes.point_to_coords(intersection_point)
+
+        f_graph = self.axes.plot(f, x_range=[-10, x_coord], color=BLUE)
+        g_graph = self.axes.plot(g, x_range=[-10, 10], color=YELLOW)
 
         tangent_line = self.tangent(g, intersection_point)
 
         reflection_line = self.reflection(f, tangent_line, intersection_point)
 
         self.play(Create(self.axes))
-        self.play(Create(f_graph), Create(g_graph))        
+        self.play(Create(f_graph), Create(g_graph))
         self.play(Create(reflection_line))
         self.wait(5)
 
@@ -35,7 +37,6 @@ class Reflect(Scene):
         x_coord = fsolve(lambda x: f(x) - g(x), 0)[0]
         y_coord = f(x_coord)
         return self.axes.coords_to_point(x_coord, y_coord)
-
 
     def tangent(self, g, intersection_point):
         x = Symbol('x')
@@ -52,5 +53,3 @@ class Reflect(Scene):
         y_intercept = y_coord - slope_reflection * x_coord
         reflection = lambda x: slope_reflection * x + y_intercept
         return self.axes.plot(reflection, x_range=[0, 10], color=GREEN)
-
-
