@@ -15,6 +15,12 @@ class Paradox(Scene):
         grid_labels = grid.get_axis_labels(x_label="x", y_label="y")
 
         func = grid.plot(
+            lambda x: 0.1 * (x - 2) * (x - 5) * (x - 7) + 7,
+            x_range=[0, 10],
+            color=BLUE,
+        )
+
+        func = axes.plot(
             lambda x: 0.1 * (x - 2) * (x - 5) * (x - 7) + 7, x_range=[0, 10], color=BLUE
         )
 
