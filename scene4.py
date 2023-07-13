@@ -3,32 +3,28 @@ from manim import *
 class Paradox(Scene):
     def construct(self):
 
-        grid = (
-            NumberPlane(
-                x_range=[0, 10, 1],
-                y_range=[0, 20, 5],
-                axis_config={"include_numbers": True, "include_tip": False},
-            )
+        axes = (
+            Axes(
+                x_range=[0,10,1],
+                x_length=9,
+                y_range=[0,20,5],
+                y_length=5.5,
+                axis_config={"include_numbers": True, "include_tip": False},           
+            ).to_edge(DL)
             .set_color(GREY)
         )
 
-        grid_labels = grid.get_axis_labels(x_label="x", y_label="y")
-
-        func = grid.plot(
-            lambda x: 0.1 * (x - 2) * (x - 5) * (x - 7) + 7,
-            x_range=[0, 10],
-            color=BLUE,
-        )
+        axes_labels = axes.get_axis_labels(x_label="x", y_label="y")
 
         func = axes.plot(
-            lambda x: 0.1 * (x - 2) * (x - 5) * (x - 7) + 7, x_range=[0, 10], color=BLUE
+            lambda x: 0.1 * (x - 2) * (x - 5) * (x - 7) + 7, x_range=[0, 10], color = BLUE
         )
 
-        x = ValueTracker(7)  # x = 7
-        dx = ValueTracker(2)  # dx = 2
+        x = ValueTracker(7) # x = 7
+        dx = ValueTracker(2) # dx = 2
 
         secant = always_redraw(
-            lambda: grid.get_secant_slope_group(
+            lambda: axes.get_secant_slope_group(
                 x=x.get_value(),
                 graph=func,
                 dx=dx.get_value(),
@@ -44,20 +40,21 @@ class Paradox(Scene):
         dot1 = always_redraw(
             lambda: Dot()
             .scale(0.7)
-            .move_to(grid.c2p(x.get_value(), func.underlying_function(x.get_value())))
+            .move_to(
+                axes.c2p(x.get_value(),func.underlying_function(x.get_value())))                       
         )
         dot2 = always_redraw(
             lambda: Dot()
             .scale(0.7)
             .move_to(
-                grid.c2p(
-                    x.get_value() + dx.get_value(),
-                    func.underlying_function(x.get_value() + dx.get_value()),
+                axes.c2p(
+                     (x).get_value() + dx.get_value(),
+                     func.underlying_function(x.get_value() + dx.get_value()),
                 )
             )
         )
 
-        self.add(grid, grid_labels, func)
+        self.add(axes, axes_labels, func)
         self.play(Create(VGroup(secant, dot1, dot2)))
         self.play(dx.animate.set_value(0.001), run_time=8)
         self.wait(2)
