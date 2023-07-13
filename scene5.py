@@ -43,8 +43,11 @@ class Reflect(Scene):
     def tangent(self, g, intersection_point):
         x = Symbol('x')
         derivative = diff(g(x), x).subs(x, intersection_point[0])
-        tangent = lambda x: derivative * (x - intersection_point[0]) + intersection_point[1]
-        return self.axes.plot(tangent, x_range=[0, 10], color=BLUE)
+        x_coord, y_coord = self.axes.point_to_coords(intersection_point)
+        y_intercept = y_coord - derivative * x_coord
+        tangent = lambda x: derivative * x + y_intercept
+        return self.axes.plot(tangent, x_range=[0, 10], color=PINK)
+
 
     def reflection(self, f, tangent_line, intersection_point):
         slope_f = (f(1) - f(0)) / (1 - 0)
