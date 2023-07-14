@@ -29,7 +29,7 @@ class Reflect(Scene):
 
         reflection_line = self.reflection(f, tangent_line, intersection_point)
 
-        self.play(Create(self.axes))
+        #self.play(Create(self.axes))
         self.play(Create(f_graph), Create(g_graph))
         self.play(Create(tangent_line))
         self.play(Create(reflection_line))
